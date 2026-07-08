@@ -9,7 +9,7 @@ using namespace std;
 #pragma comment(lib, "ws2_32.lib")
 
 #define SERVER_PORT 7070 // 서버 포트 번호
-#define SERVER_ADDR "127.0.0.1" // 서버 IP 주소
+#define SERVER_ADDR "172.21.1.6" // 서버 IP 주소
 #define BUFSIZE 100
 
 int main()
