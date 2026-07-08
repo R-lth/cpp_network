@@ -38,14 +38,19 @@ int main()
     int nAddrSize = sizeof(peerAddr);
     char recvMsg[BUFSIZE + 1] = "";
 
+    while (true) 
+    {
+        int nRecv = recvfrom(srvSocket, recvMsg, sizeof(recvMsg), 0, (SOCKADDR*)&peerAddr, &nAddrSize);
+        if (nRecv == SOCKET_ERROR)
+        {
+            cout << "recvfrom Error : " << WSAGetLastError() << endl;
+            continue;
+        }
 
-    int nRecv = recvfrom(srvSocket, recvMsg, sizeof(recvMsg), 0,
-        (SOCKADDR*)&peerAddr, &nAddrSize);
+        recvMsg[BUFSIZE] = '\0';
 
-
-    recvMsg[BUFSIZE] = '\0';
-
-    cout << "Client : " << recvMsg << endl;
+        cout << "Client : " << recvMsg << endl;
+    }
 
     closesocket(srvSocket);
     WSACleanup();

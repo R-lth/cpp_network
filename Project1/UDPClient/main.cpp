@@ -14,7 +14,6 @@ using namespace std;
 
 int main()
 {
-
     /* 1. 윈속 초기화 */
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -22,7 +21,6 @@ int main()
         cout << "Winsock 초기화 오류" << endl;
         return -1;
     }
-
 
     /* 2. UDP 서버 소켓 생성, 서버 정보 설정 */
     SOCKET hSocket = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -41,21 +39,22 @@ int main()
     {
         cout << "UDP Client running " << endl;
 
-
         /* 3. 서버로 메시지 전달 */
         string sendMessage;
         cout << "\nInput massge: ";
-        getline(cin, sendMessage);
 
-        int nSent = sendto(hSocket, sendMessage.c_str(), sendMessage.length(), 0, (SOCKADDR*)&srvAddr, sizeof(srvAddr));
-
-        cout << "Sent: " << nSent << " bytes" << endl;
-
-        if (nSent == -1)
+        while (getline(cin, sendMessage))
         {
-            cout << "Send Error: " << WSAGetLastError() << endl;
-        }
+            int nSent = sendto(hSocket, sendMessage.c_str(), sendMessage.length(), 0, (SOCKADDR*)&srvAddr, sizeof(srvAddr));
 
+            cout << "Sent: " << nSent << " bytes" << endl;
+
+            if (nSent == -1)
+            {
+                cout << "Send Error: " << WSAGetLastError() << endl;
+                break;
+            }
+        }
     }
 
     system("pause");
@@ -63,7 +62,6 @@ int main()
     /* 4. 소켓 종료 및 윈속 반환 */
     closesocket(hSocket);
     WSACleanup();
-
 
     return 0;
 }
